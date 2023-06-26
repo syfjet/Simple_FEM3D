@@ -9,7 +9,7 @@ void Geometry::geometry_area(int i, Object &obj)
     array<double,4> index;
     double sig = 0;
 
-    for (int j = 0; j < index.size(); ++j)
+    for (int j = 0; j < obj.cell[i].index_node.size(); ++j)
     {   
         
         if (j == 0)
