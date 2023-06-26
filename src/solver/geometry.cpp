@@ -42,14 +42,14 @@ void Geometry::geometry_area(int i, Object &obj)
             sig = -1.0;  
         }
     
-        Geometry::B[j] =  sig*((obj.node[index[jn[1]]].coordinate[1]-obj.node[index[jn[0]]].coordinate[1])*(obj.node[index[jn[2]]].coordinate[2]-obj.node[index[jn[0]]].coordinate[2]) - \
-                               (obj.node[index[jn[1]]].coordinate[2]-obj.node[index[jn[0]]].coordinate[2])*(obj.node[index[jn[2]]].coordinate[1]-obj.node[index[jn[0]]].coordinate[1]))/6.;
+        Geometry::B[j] =  sig*((obj.node[jn[1]].coordinate[1]-obj.node[jn[0]].coordinate[1])*(obj.node[jn[2]].coordinate[2]-obj.node[jn[0]].coordinate[2]) - \
+                               (obj.node[jn[1]].coordinate[2]-obj.node[jn[0]].coordinate[2])*(obj.node[jn[2]].coordinate[1]-obj.node[jn[0]].coordinate[1]))/6.;
 
-        Geometry::C[j] =  sig*((obj.node[index[jn[1]]].coordinate[2]-obj.node[index[jn[0]]].coordinate[2])*(obj.node[index[jn[2]]].coordinate[0]-obj.node[index[jn[0]]].coordinate[0]) - \
-                               (obj.node[index[jn[1]]].coordinate[0]-obj.node[index[jn[0]]].coordinate[0])*(obj.node[index[jn[2]]].coordinate[2]-obj.node[index[jn[0]]].coordinate[2]))/6.;
+        Geometry::C[j] =  sig*((obj.node[jn[1]].coordinate[2]-obj.node[jn[0]].coordinate[2])*(obj.node[jn[2]].coordinate[0]-obj.node[jn[0]].coordinate[0]) - \
+                               (obj.node[jn[1]].coordinate[0]-obj.node[jn[0]].coordinate[0])*(obj.node[jn[2]].coordinate[2]-obj.node[jn[0]].coordinate[2]))/6.;
 
-        Geometry::D[j] =  sig*((obj.node[index[jn[1]]].coordinate[0]-obj.node[index[jn[0]]].coordinate[0])*(obj.node[index[jn[2]]].coordinate[1]-obj.node[index[jn[0]]].coordinate[1]) - \
-                               (obj.node[index[jn[1]]].coordinate[1]-obj.node[index[jn[0]]].coordinate[1])*(obj.node[index[jn[2]]].coordinate[0]-obj.node[index[jn[0]]].coordinate[0]))/6.;
+        Geometry::D[j] =  sig*((obj.node[jn[1]].coordinate[0]-obj.node[jn[0]].coordinate[0])*(obj.node[jn[2]].coordinate[1]-obj.node[jn[0]].coordinate[1]) - \
+                               (obj.node[jn[1]].coordinate[1]-obj.node[jn[0]].coordinate[1])*(obj.node[jn[2]].coordinate[0]-obj.node[jn[0]].coordinate[0]))/6.;
     }
 
     array<array<double,3>,4> a;  
