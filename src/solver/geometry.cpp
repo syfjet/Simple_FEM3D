@@ -5,7 +5,7 @@ Geometry::~Geometry(){};
 
 void Geometry::geometry_area(int i, Object &obj)
 {
-    int jm,jp,jpp,jn[3];
+    int jn[3];
     array<double,4> index;
     double sig = 0;
 
