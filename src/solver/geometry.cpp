@@ -5,8 +5,8 @@ Geometry::~Geometry(){};
 
 void Geometry::geometry_area(int i, Object &obj)
 {
-    int jn[3];
-    array<double,4> index;
+
+    array<int,3> index;
     double sig = 0;
 
     for (int j = 0; j < obj.cell[i].index_node.size(); ++j)
@@ -14,42 +14,42 @@ void Geometry::geometry_area(int i, Object &obj)
         
         if (j == 0)
         {
-            jn[0] = obj.cell[i].index_node[1];
-            jn[1] = obj.cell[i].index_node[2];
-            jn[2] = obj.cell[i].index_node[3];
+            index[0] = obj.cell[i].index_node[1];
+            index[1] = obj.cell[i].index_node[2];
+            index[2] = obj.cell[i].index_node[3];
             sig = 1.0;           
         }
         if (j == 1)
         {
-            jn[0] = obj.cell[i].index_node[0];
-            jn[1] = obj.cell[i].index_node[2];
-            jn[2] = obj.cell[i].index_node[3];
+            index[0] = obj.cell[i].index_node[0];
+            index[1] = obj.cell[i].index_node[2];
+            index[2] = obj.cell[i].index_node[3];
             sig = -1.0;        
         }
       
         if (j == 2)
         {
-            jn[0] = obj.cell[i].index_node[0];
-            jn[1] = obj.cell[i].index_node[1];
-            jn[2] = obj.cell[i].index_node[3];
+            index[0] = obj.cell[i].index_node[0];
+            index[1] = obj.cell[i].index_node[1];
+            index[2] = obj.cell[i].index_node[3];
             sig = 1.0;         
         }
         if (j == 3)
         {
-            jn[0] = obj.cell[i].index_node[0];
-            jn[1] = obj.cell[i].index_node[1];
-            jn[2] = obj.cell[i].index_node[2];
+            index[0] = obj.cell[i].index_node[0];
+            index[1] = obj.cell[i].index_node[1];
+            index[2] = obj.cell[i].index_node[2];
             sig = -1.0;  
         }
     
-        Geometry::B[j] =  sig*((obj.node[jn[1]].coordinate[1]-obj.node[jn[0]].coordinate[1])*(obj.node[jn[2]].coordinate[2]-obj.node[jn[0]].coordinate[2]) - \
-                               (obj.node[jn[1]].coordinate[2]-obj.node[jn[0]].coordinate[2])*(obj.node[jn[2]].coordinate[1]-obj.node[jn[0]].coordinate[1]))/6.;
+        Geometry::B[j] =  sig*((obj.node[index[1]].coordinate[1]-obj.node[index[0]].coordinate[1])*(obj.node[index[2]].coordinate[2]-obj.node[index[0]].coordinate[2]) - \
+                               (obj.node[index[1]].coordinate[2]-obj.node[index[0]].coordinate[2])*(obj.node[index[2]].coordinate[1]-obj.node[index[0]].coordinate[1]))/6.0;
 
-        Geometry::C[j] =  sig*((obj.node[jn[1]].coordinate[2]-obj.node[jn[0]].coordinate[2])*(obj.node[jn[2]].coordinate[0]-obj.node[jn[0]].coordinate[0]) - \
-                               (obj.node[jn[1]].coordinate[0]-obj.node[jn[0]].coordinate[0])*(obj.node[jn[2]].coordinate[2]-obj.node[jn[0]].coordinate[2]))/6.;
+        Geometry::C[j] =  sig*((obj.node[index[1]].coordinate[2]-obj.node[index[0]].coordinate[2])*(obj.node[index[2]].coordinate[0]-obj.node[index[0]].coordinate[0]) - \
+                               (obj.node[index[1]].coordinate[0]-obj.node[index[0]].coordinate[0])*(obj.node[index[2]].coordinate[2]-obj.node[index[0]].coordinate[2]))/6.0;
 
-        Geometry::D[j] =  sig*((obj.node[jn[1]].coordinate[0]-obj.node[jn[0]].coordinate[0])*(obj.node[jn[2]].coordinate[1]-obj.node[jn[0]].coordinate[1]) - \
-                               (obj.node[jn[1]].coordinate[1]-obj.node[jn[0]].coordinate[1])*(obj.node[jn[2]].coordinate[0]-obj.node[jn[0]].coordinate[0]))/6.;
+        Geometry::D[j] =  sig*((obj.node[index[1]].coordinate[0]-obj.node[index[0]].coordinate[0])*(obj.node[index[2]].coordinate[1]-obj.node[index[0]].coordinate[1]) - \
+                               (obj.node[index[1]].coordinate[1]-obj.node[index[0]].coordinate[1])*(obj.node[index[2]].coordinate[0]-obj.node[index[0]].coordinate[0]))/6.0;
     }
 
     array<array<double,3>,4> a;  
