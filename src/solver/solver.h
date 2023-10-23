@@ -1,13 +1,16 @@
 #pragma once
 #include <iostream>
-#include <fstream>
-#include <vector>
 #include "../object.h"
+
 #include "shift.h"
+//#include "shift.cpp"
+
 #include "stress_value.h"
+//#include "stress_value.cpp"
+
 #include "linalg.h"
 #include "../paraview/out.h"
-using namespace std; 
+
 
 class Solver: virtual Shift, virtual Linalg, Stress_value, Out
 {	

@@ -6,8 +6,8 @@ Geometry::~Geometry(){};
 void Geometry::geometry_area(int i, Object &obj)
 {
 
-    array<int,3> index;
-    double sig = 0;
+    array<int,4> index;
+    double sig = 0.0;
 
     for (int j = 0; j < obj.cell[i].index_node.size(); ++j)
     {   
@@ -17,6 +17,7 @@ void Geometry::geometry_area(int i, Object &obj)
             index[0] = obj.cell[i].index_node[1];
             index[1] = obj.cell[i].index_node[2];
             index[2] = obj.cell[i].index_node[3];
+            index[4] = obj.cell[i].index_node[0];            
             sig = 1.0;           
         }
         if (j == 1)
@@ -24,6 +25,7 @@ void Geometry::geometry_area(int i, Object &obj)
             index[0] = obj.cell[i].index_node[0];
             index[1] = obj.cell[i].index_node[2];
             index[2] = obj.cell[i].index_node[3];
+            index[3] = obj.cell[i].index_node[1];            
             sig = -1.0;        
         }
       
@@ -32,6 +34,7 @@ void Geometry::geometry_area(int i, Object &obj)
             index[0] = obj.cell[i].index_node[0];
             index[1] = obj.cell[i].index_node[1];
             index[2] = obj.cell[i].index_node[3];
+            index[3] = obj.cell[i].index_node[2];            
             sig = 1.0;         
         }
         if (j == 3)
@@ -39,6 +42,7 @@ void Geometry::geometry_area(int i, Object &obj)
             index[0] = obj.cell[i].index_node[0];
             index[1] = obj.cell[i].index_node[1];
             index[2] = obj.cell[i].index_node[2];
+            index[3] = obj.cell[i].index_node[3];            
             sig = -1.0;  
         }
     

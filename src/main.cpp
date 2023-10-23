@@ -14,8 +14,8 @@ int main()
 	cin >> name_file;
  	read_file -> read(name_file,obj,numer); 
  	delete read_file;
- 	Solver *solver = new Solver;
- 	solver -> FEM_solver(obj);
- 	delete solver;
+ 	Solver *solver_ = new Solver;
+ 	solver_->FEM_solver(obj);
+ 	delete solver_;
 	return 0;		
 } 

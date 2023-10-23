@@ -1,11 +1,13 @@
 #include "solver.h"
 
+//template <class O> 
 Solver::Solver(){};
+
 Solver::~Solver(){};         
 
+//template <class O> 
 void Solver::FEM_solver(Object &obj)
 {
-
     Shift::define_matrix(obj);    
 
     Linalg::solve_linear_system(obj);    
