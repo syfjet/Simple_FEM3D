@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-#include <cmath>
 #include <array>
 #include "../object.h"
 

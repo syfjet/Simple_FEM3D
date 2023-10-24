@@ -1,6 +1,5 @@
 #pragma once
 #include "shift.h"
-
 #include "../object.h"
 
 template<class O>
