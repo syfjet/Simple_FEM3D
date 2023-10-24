@@ -45,7 +45,7 @@ void Linalg<O>::solve_linear_system(O &obj)
     vector<double> As(3*obj.node.size(),0); 
     vector<double> s(3*obj.node.size(),0); 
  
-    Boundary::boundary_set(obj,global_force);
+    Boundary<O>::boundary_set(obj,global_force);
     Linalg<O>::update_K_rigid(global_force);
     double tol, temp,rr,rAs,sAs,alpha,beta;
 

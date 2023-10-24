@@ -1,13 +1,10 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <cmath>
 #include "boundary.h"
-
+#include "boundary.cpp"
 #include "../object.h"
 
 template<class O>
-class Linalg: Boundary
+class Linalg: Boundary<O>
 {	
 	public:
 		Linalg();

@@ -38,15 +38,6 @@ void Shift<O>::define_matrix(O &obj)
 
     vector<int> temp_index(obj.node.size(),0);
     vector<vector<vector<double>>> temp_k(obj.node.size(),vector<vector<double>>(3,vector<double>(3,0.0)));  
-    // vector<double> temp_kx1(obj.node.size()); 
-    // vector<double> temp_ky1(obj.node.size());
-    // vector<double> temp_kz1(obj.node.size());    
-    // vector<double> temp_kx2(obj.node.size());
-    // vector<double> temp_ky2(obj.node.size());
-    // vector<double> temp_kz2(obj.node.size());    
-    // vector<double> temp_kx3(obj.node.size());
-    // vector<double> temp_ky3(obj.node.size());
-    // vector<double> temp_kz3(obj.node.size());  
     
     typename Linalg<O>::K_rigid_sparse K_rigid_;
  
@@ -57,8 +48,8 @@ void Shift<O>::define_matrix(O &obj)
 
     for (int i = 0; i < obj.cell.size(); ++i)
     {
-        Geometry::geometry_area(i, obj);
-        Geometry::geometry_b_matrix(i, obj);
+        Geometry<O>::geometry_area(i, obj);
+        Geometry<O>::geometry_b_matrix(i, obj);
         Shift<O>::hooke(i,obj);
  
         for (int k = 0; k < B_matrix_T.size(); ++k)

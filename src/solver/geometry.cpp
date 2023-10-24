@@ -1,17 +1,20 @@
 #include "geometry.h"
 
-Geometry::Geometry(){};
-Geometry::~Geometry(){};         
+template<class O>
+Geometry<O>::Geometry(){};
+template<class O>
+Geometry<O>::~Geometry(){};         
 
-void Geometry::geometry_area(int i, Object &obj)
+template<class O>
+template<class I>
+void Geometry<O>::geometry_area(I i, O &obj)
 {
 
-    array<int,4> index;
+    std::array<int,4> index;
     double sig = 0.0;
 
     for (int j = 0; j < obj.cell[i].index_node.size(); ++j)
     {   
-        
         if (j == 0)
         {
             index[0] = obj.cell[i].index_node[1];
@@ -46,19 +49,19 @@ void Geometry::geometry_area(int i, Object &obj)
             sig = -1.0;  
         }
     
-        Geometry::B[j] =  sig*((obj.node[index[1]].coordinate[1]-obj.node[index[0]].coordinate[1])*(obj.node[index[2]].coordinate[2]-obj.node[index[0]].coordinate[2]) - \
+        Geometry<O>::B[j] =  sig*((obj.node[index[1]].coordinate[1]-obj.node[index[0]].coordinate[1])*(obj.node[index[2]].coordinate[2]-obj.node[index[0]].coordinate[2]) - \
                                (obj.node[index[1]].coordinate[2]-obj.node[index[0]].coordinate[2])*(obj.node[index[2]].coordinate[1]-obj.node[index[0]].coordinate[1]))/6.0;
 
-        Geometry::C[j] =  sig*((obj.node[index[1]].coordinate[2]-obj.node[index[0]].coordinate[2])*(obj.node[index[2]].coordinate[0]-obj.node[index[0]].coordinate[0]) - \
+        Geometry<O>::C[j] =  sig*((obj.node[index[1]].coordinate[2]-obj.node[index[0]].coordinate[2])*(obj.node[index[2]].coordinate[0]-obj.node[index[0]].coordinate[0]) - \
                                (obj.node[index[1]].coordinate[0]-obj.node[index[0]].coordinate[0])*(obj.node[index[2]].coordinate[2]-obj.node[index[0]].coordinate[2]))/6.0;
 
-        Geometry::D[j] =  sig*((obj.node[index[1]].coordinate[0]-obj.node[index[0]].coordinate[0])*(obj.node[index[2]].coordinate[1]-obj.node[index[0]].coordinate[1]) - \
+        Geometry<O>::D[j] =  sig*((obj.node[index[1]].coordinate[0]-obj.node[index[0]].coordinate[0])*(obj.node[index[2]].coordinate[1]-obj.node[index[0]].coordinate[1]) - \
                                (obj.node[index[1]].coordinate[1]-obj.node[index[0]].coordinate[1])*(obj.node[index[2]].coordinate[0]-obj.node[index[0]].coordinate[0]))/6.0;
     }
 
-    array<array<double,3>,4> a;  
-    array<array<double,3>,4> b;  
-    array<array<double,3>,4> c; 
+    std::array<std::array<double,3>,4> a;  
+    std::array<std::array<double,3>,4> b;  
+    std::array<std::array<double,3>,4> c; 
 
     for (int j = 0; j < a[0].size();++j)
     {
@@ -82,61 +85,63 @@ void Geometry::geometry_area(int i, Object &obj)
     obj.cell[i].volume = abs(b[0][0]*(a[0][1]*c[0][2]-a[0][2]*c[0][1])-b[0][1]*(a[0][0]*c[0][2]-a[0][2]*c[0][0])+b[0][2]*(a[0][0]*c[0][1]-a[0][1]*c[0][0]))/6.0;    
 }
 
-void Geometry::geometry_b_matrix(int i, Object &obj)
+template<class O>
+template<class I>
+void Geometry<O>::geometry_b_matrix(I i, O &obj)
 {
 
-    obj.cell[i].B_matrix[0][0] = Geometry::B[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[0][3] = Geometry::B[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[0][6] = Geometry::B[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[0][9] = Geometry::B[3]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[0][0] = Geometry<O>::B[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[0][3] = Geometry<O>::B[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[0][6] = Geometry<O>::B[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[0][9] = Geometry<O>::B[3]/obj.cell[i].volume;
   
-    obj.cell[i].B_matrix[1][1] = Geometry::C[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[1][4] = Geometry::C[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[1][7] = Geometry::C[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[1][10] = Geometry::C[3]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[1][1] = Geometry<O>::C[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[1][4] = Geometry<O>::C[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[1][7] = Geometry<O>::C[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[1][10] = Geometry<O>::C[3]/obj.cell[i].volume;
 
-    obj.cell[i].B_matrix[2][2] = Geometry::D[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[2][5] = Geometry::D[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[2][8] = Geometry::D[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[2][11] = Geometry::D[3]/obj.cell[i].volume;
-
-
+    obj.cell[i].B_matrix[2][2] = Geometry<O>::D[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[2][5] = Geometry<O>::D[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[2][8] = Geometry<O>::D[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[2][11] = Geometry<O>::D[3]/obj.cell[i].volume;
 
 
-    obj.cell[i].B_matrix[3][0] = Geometry::C[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[3][3] = Geometry::C[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[3][6] = Geometry::C[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[3][9] = Geometry::C[3]/obj.cell[i].volume;
+
+
+    obj.cell[i].B_matrix[3][0] = Geometry<O>::C[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[3][3] = Geometry<O>::C[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[3][6] = Geometry<O>::C[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[3][9] = Geometry<O>::C[3]/obj.cell[i].volume;
    
 
-    obj.cell[i].B_matrix[3][1] = Geometry::B[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[3][4] = Geometry::B[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[3][7] = Geometry::B[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[3][10] = Geometry::B[3]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[3][1] = Geometry<O>::B[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[3][4] = Geometry<O>::B[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[3][7] = Geometry<O>::B[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[3][10] = Geometry<O>::B[3]/obj.cell[i].volume;
 
 
 
-    obj.cell[i].B_matrix[4][1] = Geometry::D[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[4][4] = Geometry::D[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[4][7] = Geometry::D[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[4][10] = Geometry::D[3]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[4][1] = Geometry<O>::D[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[4][4] = Geometry<O>::D[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[4][7] = Geometry<O>::D[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[4][10] = Geometry<O>::D[3]/obj.cell[i].volume;
 
 
-    obj.cell[i].B_matrix[4][2] = Geometry::C[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[4][5] = Geometry::C[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[4][8] = Geometry::C[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[4][11] = Geometry::C[3]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[4][2] = Geometry<O>::C[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[4][5] = Geometry<O>::C[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[4][8] = Geometry<O>::C[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[4][11] = Geometry<O>::C[3]/obj.cell[i].volume;
       
 
-    obj.cell[i].B_matrix[5][0] = Geometry::D[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[5][3] = Geometry::D[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[5][6] = Geometry::D[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[5][9] = Geometry::D[3]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[5][0] = Geometry<O>::D[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[5][3] = Geometry<O>::D[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[5][6] = Geometry<O>::D[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[5][9] = Geometry<O>::D[3]/obj.cell[i].volume;
   
 
-    obj.cell[i].B_matrix[5][2] = Geometry::B[0]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[5][5] = Geometry::B[1]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[5][8] = Geometry::B[2]/obj.cell[i].volume;
-    obj.cell[i].B_matrix[5][11] = Geometry::B[3]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[5][2] = Geometry<O>::B[0]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[5][5] = Geometry<O>::B[1]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[5][8] = Geometry<O>::B[2]/obj.cell[i].volume;
+    obj.cell[i].B_matrix[5][11] = Geometry<O>::B[3]/obj.cell[i].volume;
 
 };

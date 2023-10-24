@@ -1,19 +1,15 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <cmath>
 #include "../object.h"
 
-using namespace std; 
+template<class O>
 class Boundary
 {	
 	public:
 		Boundary();
 		~Boundary();
 	protected:
-		void boundary_set(Object &obj,vector<double> &global_force);
+	template<class V> void boundary_set(O &obj,V &global_force);
 	private:
-	
 }; 
 
  

@@ -1,8 +1,4 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <array>
-
 #include "shift.h"
 
 #include "../object.h"

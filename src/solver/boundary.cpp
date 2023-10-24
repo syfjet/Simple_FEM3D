@@ -1,9 +1,12 @@
 #include "boundary.h"
+template<class O>
+Boundary<O>::Boundary(){};
+template<class O>
+Boundary<O>::~Boundary(){};         
 
-Boundary::Boundary(){};
-Boundary::~Boundary(){};         
-
-void Boundary::boundary_set(Object &obj,vector<double> &global_force)
+template<class O>
+template<class V>
+void Boundary<O>::boundary_set(O &obj,V &global_force)
 {
 
     for (int i = 0; i < obj.segment.size(); ++i)
