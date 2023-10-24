@@ -1,36 +1,42 @@
 #include "linalg.h"
 
-Linalg::Linalg(){};
-Linalg::~Linalg(){};         
+template<class O>
+Linalg<O>::Linalg(){};
+template<class O>
+Linalg<O>::~Linalg(){};         
 
-void Linalg::update_K_rigid(vector<double> &global_force)
+template<class O>
+template<class V>
+void Linalg<O>::update_K_rigid(V &global_force)
 {
-    for (int i = 0; i < Linalg::k_rigid.size(); ++i)
+    for (int i = 0; i < Linalg<O>::k_rigid.size(); ++i)
     {   
         if (global_force[i] == 0)
         {
-            for (int j = 0; j < Linalg::k_rigid[i].index.size(); ++j)
+            for (int j = 0; j < Linalg<O>::k_rigid[i].index.size(); ++j)
             {        
-                Linalg::k_rigid[i].element[j] = 0;
-                if ((Linalg::k_rigid[i].index[j] == i) && (Linalg::k_rigid[i].element[j] == 0))
+                Linalg<O>::k_rigid[i].element[j] = 0;
+                if ((Linalg<O>::k_rigid[i].index[j] == i) && (Linalg<O>::k_rigid[i].element[j] == 0))
                 {
-                    Linalg::k_rigid[i].element[j] = 1;
+                    Linalg<O>::k_rigid[i].element[j] = 1;
                 } 
             }
-            for (int k = i+1; k < Linalg::k_rigid.size(); ++k)
+            for (int k = i+1; k < Linalg<O>::k_rigid.size(); ++k)
             {   
-                for (int l = 0; l < Linalg::k_rigid[k].index.size(); ++l)
+                for (int l = 0; l < Linalg<O>::k_rigid[k].index.size(); ++l)
                 {              
-                    if (Linalg::k_rigid[k].index[l] == i)
+                    if (Linalg<O>::k_rigid[k].index[l] == i)
                     {
-                        Linalg::k_rigid[k].element[l] = 0;   
+                        Linalg<O>::k_rigid[k].element[l] = 0;   
                     }  
                 }
             }                  
         }
     }
 }
-void Linalg::solve_linear_system(Object &obj)
+
+template<class O>
+void Linalg<O>::solve_linear_system(O &obj)
 {
 
     vector<double> global_force(3*obj.node.size(),1);
@@ -40,7 +46,7 @@ void Linalg::solve_linear_system(Object &obj)
     vector<double> s(3*obj.node.size(),0); 
  
     Boundary::boundary_set(obj,global_force);
-    Linalg::update_K_rigid(global_force);
+    Linalg<O>::update_K_rigid(global_force);
     double tol, temp,rr,rAs,sAs,alpha,beta;
 
 
@@ -52,7 +58,7 @@ void Linalg::solve_linear_system(Object &obj)
     }
 
     tol = 1e-3;
-    for (int i = 0; i< Linalg::k_rigid.size(); ++i)
+    for (int i = 0; i< Linalg<O>::k_rigid.size(); ++i)
     {   
         r[i] = -global_force[i];
         s[i] = r[i];
@@ -62,12 +68,12 @@ void Linalg::solve_linear_system(Object &obj)
     {   
         rr = 0;
         sAs = 0;
-        for (int i = 0; i < Linalg::k_rigid.size(); ++i)
+        for (int i = 0; i < Linalg<O>::k_rigid.size(); ++i)
         {   
             temp = 0;
-            for (int j = 0; j < Linalg::k_rigid[i].index.size(); ++j)
+            for (int j = 0; j < Linalg<O>::k_rigid[i].index.size(); ++j)
             {
-                temp += Linalg::k_rigid[i].element[j]*s[Linalg::k_rigid[i].index[j]];     
+                temp += Linalg<O>::k_rigid[i].element[j]*s[Linalg<O>::k_rigid[i].index[j]];     
             }
             As[i] = temp;
             rr += r[i]*r[i];
@@ -76,7 +82,7 @@ void Linalg::solve_linear_system(Object &obj)
 
         alpha = rr/sAs;
 
-        for (int i = 0; i < Linalg::k_rigid.size(); ++i)
+        for (int i = 0; i < Linalg<O>::k_rigid.size(); ++i)
         {
             x[i] = x[i]-alpha*s[i];   
         }
@@ -86,12 +92,12 @@ void Linalg::solve_linear_system(Object &obj)
         rAs = 0;
         sAs = 0;
 
-        for (int i = 0; i< Linalg::k_rigid.size(); ++i)
+        for (int i = 0; i< Linalg<O>::k_rigid.size(); ++i)
         {
             temp = 0;
-            for (int j = 0; j < Linalg::k_rigid[i].index.size(); ++j)
+            for (int j = 0; j < Linalg<O>::k_rigid[i].index.size(); ++j)
             {
-                temp+=Linalg::k_rigid[i].element[j]*x[Linalg::k_rigid[i].index[j]];    
+                temp+=Linalg<O>::k_rigid[i].element[j]*x[Linalg<O>::k_rigid[i].index[j]];    
             }
             r[i] = temp-global_force[i];
             rr += r[i]*r[i];  
@@ -106,7 +112,7 @@ void Linalg::solve_linear_system(Object &obj)
         else
         {
             beta = -rAs/sAs;
-            for (int i = 0; i< Linalg::k_rigid.size(); ++i)
+            for (int i = 0; i< Linalg<O>::k_rigid.size(); ++i)
             {  
                 s[i] = r[i]+beta*s[i];  
             }     

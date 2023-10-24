@@ -7,15 +7,16 @@
 #include "geometry.h"
 #include "linalg.h"
 using namespace std; 
-class Shift: Geometry, virtual Linalg
+template<class O>
+class Shift: Geometry, virtual Linalg<O>
 {	
 	public:
 		Shift();
 		~Shift();
-		void define_matrix(Object &obj); 
+		void define_matrix(O &obj); 
 		array<array<double,6>,6> hooke_matrix = {{0}};
 	protected:
-		void hooke(int i,Object &obj);
+		template<class I> void hooke(I i,O &obj);
 	private:
 }; 
 

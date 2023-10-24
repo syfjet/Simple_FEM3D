@@ -1,18 +1,23 @@
 #include "stress_value.h"
 
-Stress_value::Stress_value(){};
-Stress_value::~Stress_value(){};         
+template<class O>
+Stress_value<O>::Stress_value(){};
+template<class O>
+Stress_value<O>::~Stress_value(){};         
 
-void Stress_value::define_stress_values(Object &obj)
+template<class O>
+void Stress_value<O>::define_stress_values(O &obj)
 {
     for (int i = 0; i < obj.cell.size(); ++i)
     {
-        Stress_value::epsilon(i,obj);
-        Stress_value::stress(i,obj);
+        Stress_value<O>::epsilon(i,obj);
+        Stress_value<O>::stress(i,obj);
     }
 }
 
-void Stress_value::epsilon(int i,Object &obj)
+template<class O>
+template<class I>
+void Stress_value<O>::epsilon(I i,O &obj)
 {
 
     array<int,4> ii;
@@ -50,7 +55,9 @@ void Stress_value::epsilon(int i,Object &obj)
     }
 }
 
-void Stress_value::stress(int i,Object &obj)
+template<class O>
+template<class I>
+void Stress_value<O>::stress(I i,O &obj)
 {
     array<double,6> U;
     U[0] = obj.cell[i].epsilon[0];
@@ -65,7 +72,7 @@ void Stress_value::stress(int i,Object &obj)
         for (int k = 0; k < U.size(); ++k)
         {
            
-           obj.cell[i].stress[j] += Shift::hooke_matrix[j][k]*U[k];
+           obj.cell[i].stress[j] += Shift<O>::hooke_matrix[j][k]*U[k];
         }
     }
 

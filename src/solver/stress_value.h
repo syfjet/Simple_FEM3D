@@ -2,20 +2,22 @@
 #include <iostream>
 #include <vector>
 #include <array>
+
 #include "shift.h"
+
 #include "../object.h"
 
-using namespace std; 
-class Stress_value: virtual Shift
+template<class O>
+class Stress_value: virtual Shift<O>
 {	
 	public:
 		Stress_value();
 		~Stress_value();
 	protected:
-		void define_stress_values(Object &obj);
+		void define_stress_values(O &obj);
 	private:
-		void epsilon(int i,Object &obj);
-		void stress(int i,Object &obj);
+		template<class I> void epsilon(I i,O &obj);
+		template<class I> void stress(I i,O &obj);
 }; 
 
  

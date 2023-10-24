@@ -1,16 +1,16 @@
 #include "solver.h"
 
-//template <class O> 
-Solver::Solver(){};
+template <class O> 
+Solver<O>::Solver(){};
+template <class O> 
+Solver<O>::~Solver(){};         
 
-Solver::~Solver(){};         
-
-//template <class O> 
-void Solver::FEM_solver(Object &obj)
+template <class O> 
+void Solver<O>::FEM_solver(O &obj)
 {
-    Shift::define_matrix(obj);    
+    Shift<O>::define_matrix(obj);    
 
-    Linalg::solve_linear_system(obj);    
-    Stress_value::define_stress_values(obj);
+    Linalg<O>::solve_linear_system(obj);    
+    Stress_value<O>::define_stress_values(obj);
     Out::out_paraview(obj);
 };

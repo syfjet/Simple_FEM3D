@@ -2,7 +2,10 @@
 #include "numerical.h"
 #include "object.h"
 #include "reader/read_input_file.h"
+
 #include "solver/solver.h"
+#include "solver/solver.cpp"
+
 int main()
 {
 	std::string name_file;
@@ -14,8 +17,8 @@ int main()
 	cin >> name_file;
  	read_file -> read(name_file,obj,numer); 
  	delete read_file;
- 	Solver *solver_ = new Solver;
- 	solver_->FEM_solver(obj);
- 	delete solver_;
+ 	Solver<Object> *mech_solver = new Solver<Object>;
+ 	mech_solver->FEM_solver(obj);
+ 	delete mech_solver;
 	return 0;		
 } 

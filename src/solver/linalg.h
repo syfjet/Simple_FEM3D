@@ -6,22 +6,22 @@
 
 #include "../object.h"
 
-using namespace std; 
+template<class O>
 class Linalg: Boundary
 {	
 	public:
 		Linalg();
 		~Linalg();
 	protected:
-		void solve_linear_system(Object &obj);
+		void solve_linear_system(O &obj);
 		class K_rigid_sparse
 		{	public:
-			vector<int> index;
-			vector<double> element; 
+			std::vector<int> index;
+			std::vector<double> element; 
 		};
-		vector<K_rigid_sparse> k_rigid;
+		std::vector<K_rigid_sparse> k_rigid;
 	private:
-		void update_K_rigid(vector<double> &U);
+		template<class V> void update_K_rigid(V &U);
 }; 
 
  
