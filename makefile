@@ -1,4 +1,4 @@
-TARGET = fem3d
+TARGET = simple_fem3d
 CC = g++
 
 CFLAGS = -O3
