@@ -15,6 +15,8 @@ class Shift: Geometry<O>, virtual Linalg<O>
 	protected:
 		template<class I> void hooke(I i,O &obj);
 	private:
+		template<class I,class V> void transform_matrix(I i, O &obj, V &B_matrix_T);
+		template<class I,class V> void get_local_matrix(I i, O &obj, V &B_matrix_T);
 }; 
 
  

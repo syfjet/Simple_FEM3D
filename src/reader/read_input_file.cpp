@@ -13,27 +13,19 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 		{
 			if (regex_replace(line, regex(" "), "") == "#START_INPUT#")
 			{
-				cout << line << endl;
+				std::cout << line << std::endl;
 			}
 
 			if (regex_replace(line, regex(" "), "") == "#END_INPUT#")
 			{
-				cout << line << endl;
+				std::cout << line << std::endl;
 			}
 
 			if (regex_replace(line, regex(" "), "") == "MESH")
 			{	
 				in >> Read_input_file::mesh_file; 	
-
- 
 				Read_input_file::read_mesh(obj);
- 
 				Construction_mesh::node_connection(obj); 
-				Construction_mesh::cell_connection(obj); 
-				Construction_mesh::bound_construct(obj); 
-
- 				in >> text;
-				Read_input_file::error(text, "MESH");
 			}
 
 			if (regex_replace(line, regex(" "), "")  == "METRIC")
@@ -45,17 +37,14 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 					obj.node[i].coordinate[0] = obj.node[i].coordinate[0]*numer.metric;
 					obj.node[i].coordinate[1] = obj.node[i].coordinate[1]*numer.metric;	
 					obj.node[i].coordinate[2] = obj.node[i].coordinate[2]*numer.metric; 	
-				}
-
-				in >> text;		
-				Read_input_file::error(text, "METRIC"); 
+				}	
 			}
 
 			if (regex_replace(line, regex(" "), "")  == "BOUNDARY")
 			{	
 				int number_boundary;
-				vector <int> number;
-				vector <string> type_boundary;
+				std::vector <int> number;
+				std::vector <string> type_boundary;
 				
 				in >> text;
 				in >> number_boundary;
@@ -69,17 +58,14 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 					type_boundary.push_back(text);
 				}
 	
-				Read_input_file::boundary_init(obj,number,type_boundary);	
-				in >> text;					
-				Read_input_file::error(text, "BOUNDARY"); 
-
+				Read_input_file::boundary_init(obj,number,type_boundary);					
 			}			
 			if (regex_replace(line, regex(" "), "")  == "INITIAL")
 			{	
 				int num = 0;
-				vector <int> parts;
-				vector <double> E;
-				vector <double> nu;
+				std::vector <int> parts;
+				std::vector <double> E;
+				std::vector <double> nu;
 
 				in >> text;
 				in >> num;
@@ -96,13 +82,9 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 					nu.push_back(stod(regex_replace(text, regex(" "), "")));
 				}
 				Read_input_file::cell_init(obj,parts,E,nu);
-				in >> text;					
-				Read_input_file::error(text, "INITIAL"); 				
-			
 			}
 			if (regex_replace(line, regex(" "), "")  == "SOURCE")
 			{	
-
 				in >> text;
 				if (regex_replace(text, regex(" "), "") == "num")
 				{	
@@ -110,7 +92,6 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 					in >> num;
 					for(int k = 0; k < num; ++k)
 					{
-
 						in >> text;
 						
 						if (regex_replace(text, regex(" "), "") == "point")
@@ -178,11 +159,6 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 						}
 					}
 				}
-				else
-				{
-					Read_input_file::error(text, "SOURCE_num"); 
-				} 
-
 			}
  		}
 	}
@@ -213,11 +189,6 @@ void Read_input_file::boundary_init(Object &obj,vector <int>& number,vector <str
 				{
 					obj.segment[i].type = 4;
 				}				
-				// else
-				// {
-				// 	obj.segment[i].type = 0; 
-				// }
-		 		break;	
  			}
  		}
  	}
@@ -237,19 +208,6 @@ void Read_input_file::cell_init(Object &obj,vector <int>& parts,vector <double>&
  			}
  		}
  	}
-}
-
-void Read_input_file::error(string text, string text_)
-{	
-	if (text == "END_"+text_)
-	{
-		cout << "Complete read "+text_ << endl;
-	}
-	else
-	{
-		cout<< "Error read "+text_+"! Program stop." << endl;
-		exit(0);
-	}
 }
 
 void Read_input_file::read_mesh(Object &obj)
@@ -319,8 +277,7 @@ void Read_input_file::read_mesh(Object &obj)
  					 	if (j == obj.cell[i].index_node.size()){obj.cell[i].part = _cell;}
  					}	
 				}
-
-				cout << "Tetrahedra end" << endl;
+				std::cout << "Tetrahedra end" << std::endl;
 			}
  		}
 	}

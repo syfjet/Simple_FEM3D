@@ -1,6 +1,6 @@
 #START_INPUT#
 MESH
-mesh/fem.mesh
+mesh/fem_2.mesh
 END_MESH
 
 METRIC
@@ -9,9 +9,8 @@ END_METRIC
 
 BOUNDARY
 num
-2
-19 fix
-20 fix
+1
+1 fix
 END_BOUNDARY
 
 INITIAL
@@ -26,20 +25,21 @@ num
 1
 boundary
 n Fx Fy Fz
-3 5 0. -40
+4 0 -1000 0
 END_SOURCE
 #END_INPUT#
 
 
 #may be repalce in SOURCE for point action
 
+
 3
 point
 x y z Fx Fy Fz
-7 0. 7 -10 10 -10
+7 0. 7 -1 1 -1
 point
 x y z Fx Fy Fz
-7 0.1 7 -10 10 -10
+7 0.1 7 -1 1 -1
 point
 x y z Fx Fy Fz
-7 0.2 7 -10 10 -10
+7 0.2 7 -1 1 -1

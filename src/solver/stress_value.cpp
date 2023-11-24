@@ -20,8 +20,8 @@ template<class I>
 void Stress_value<O>::epsilon(I i,O &obj)
 {
 
-    array<int,4> ii;
-    array<double,12> U;
+    std::array<int,4> ii;
+    std::array<double,12> U;
 
     ii[0] = obj.cell[i].index_node[0];
     ii[1] = obj.cell[i].index_node[1];
@@ -59,7 +59,7 @@ template<class O>
 template<class I>
 void Stress_value<O>::stress(I i,O &obj)
 {
-    array<double,6> U;
+    std::array<double,6> U;
     U[0] = obj.cell[i].epsilon[0];
     U[1] = obj.cell[i].epsilon[1];
     U[2] = obj.cell[i].epsilon[2];
@@ -76,5 +76,5 @@ void Stress_value<O>::stress(I i,O &obj)
         }
     }
 
-//obj.cell[i].full_stress = sqrt(obj.cell[i].stress[0]*obj.cell[i].stress[0]-obj.cell[i].stress[0]*obj.cell[i].stress[1]+obj.cell[i].stress[1]*obj.cell[i].stress[1]+3.*obj.cell[i].stress[2]*obj.cell[i].stress[2]);  
+    obj.cell[i].full_stress = sqrt(obj.cell[i].stress[0]*obj.cell[i].stress[0]-obj.cell[i].stress[0]*obj.cell[i].stress[1]+obj.cell[i].stress[1]*obj.cell[i].stress[1]+3.*obj.cell[i].stress[2]*obj.cell[i].stress[2]);  
 };

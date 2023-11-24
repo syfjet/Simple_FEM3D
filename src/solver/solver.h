@@ -11,9 +11,10 @@
 #include "linalg.cpp"
 
 #include "../paraview/out.h"
+#include "../paraview/out.cpp"
 
 template<class O>
-class Solver: virtual Shift<O>, virtual Linalg<O>, Stress_value<O>, Out
+class Solver: virtual Shift<O>, virtual Linalg<O>, Stress_value<O>, Out<O>
 {	
 public:
 	Solver();

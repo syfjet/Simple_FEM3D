@@ -1,362 +1,363 @@
 #include "out.h"
 
-Out::Out(){};
-Out::~Out(){};       
+template <class O> 
+Out<O>::Out(){};
+template <class O> 
+Out<O>::~Out(){};       
 
- 
-void Out::out_paraview(Object &obj)
+template <class O> 
+void Out<O>::out_paraview(O &obj)
 {
-        ofstream out;
-        out.open("results/results.vtu");
-        if (out.is_open())
+        std::ofstream output;
+        output.open("results/results.vtu");
+        if (output.is_open())
         {
-            out << "<VTKFile type='UnstructuredGrid' version='0.1' byte_order='BigEndian'>"<<"\n";
-            out << "<UnstructuredGrid>"<<"\n";
-            out << "<Piece NumberOfPoints='"<<obj.node.size()<<"' NumberOfCells='"<<obj.cell.size()<<"'>"<<"\n";
-            out << "<Points>"<<"\n";
-            out << "<DataArray type='Float64' NumberOfComponents='3' Format='ascii'>"<<"\n";
+            output << "<VTKFile type='UnstructuredGrid' version='0.1' byte_order='BigEndian'>"<<"\n";
+            output << "<UnstructuredGrid>"<<"\n";
+            output << "<Piece NumberOfPoints='"<<obj.node.size()<<"' NumberOfCells='"<<obj.cell.size()<<"'>"<<"\n";
+            output << "<Points>"<<"\n";
+            output << "<DataArray type='Float64' NumberOfComponents='3' Format='ascii'>"<<"\n";
  
             for (int i = 0;i<obj.node.size();++i)
             {
-                out << obj.node[i].coordinate[0]<< " " <<obj.node[i].coordinate[1]<< " " <<obj.node[i].coordinate[2]<<"\n";
+                output << obj.node[i].coordinate[0]<< " " <<obj.node[i].coordinate[1]<< " " <<obj.node[i].coordinate[2]<<"\n";
             }
-            out << "</DataArray>"<<"\n";
-            out << "</Points>"<<"\n";
+            output << "</DataArray>"<<"\n";
+            output << "</Points>"<<"\n";
 
-
-            out << "<PointData Vectors='Velocity'>"<<"\n";
-            out << "<DataArray type='Float64' Name='ux' Format='ascii'>"<<"\n";
+            output << "<PointData Vectors='Velocity'>"<<"\n";
+            output << "<DataArray type='Float64' Name='ux' Format='ascii'>"<<"\n";
  
             for (int i = 0;i<obj.node.size();++i)
             {
-                out << obj.node[i].displacement[0]<<"\n";
+                output << obj.node[i].displacement[0]<<"\n";
             }
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='uy' Format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='uy' Format='ascii'>"<<"\n";
  
             for (int i = 0;i<obj.node.size();++i)
             {
-                out << obj.node[i].displacement[1]<<"\n";
+                output << obj.node[i].displacement[1]<<"\n";
             }
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='uz' Format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='uz' Format='ascii'>"<<"\n";
  
             for (int i = 0;i<obj.node.size();++i)
             {
-                out << obj.node[i].displacement[2]<<"\n";
+                output << obj.node[i].displacement[2]<<"\n";
             }
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='abs(u)' Format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='abs(u)' Format='ascii'>"<<"\n";
  
             for (int i = 0;i<obj.node.size();++i)
             {
-                out << sqrt(pow(obj.node[i].displacement[0],2)+pow(obj.node[i].displacement[1],2)+pow(obj.node[i].displacement[2],2))<<"\n";
+                output << sqrt(pow(obj.node[i].displacement[0],2)+pow(obj.node[i].displacement[1],2)+pow(obj.node[i].displacement[2],2))<<"\n";
             }
-            out << "</DataArray>"<<"\n";
-            out << "</PointData>"<<"\n";
+            output << "</DataArray>"<<"\n";
+            output << "</PointData>"<<"\n";
  
 
 
-           out << "<CellData Scalars='scalars'>"<<"\n";
+            output << "<CellData Scalars='scalars'>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='Parts' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='Parts' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-             out << obj.cell[i].part<<"\n";
+             output << obj.cell[i].part<<"\n";
             }    
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
 
-            out << "<DataArray type='Float64' Name='e_x' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='e_x' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[0]<<"\n";
+                output << obj.cell[i].epsilon[0]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='e_y' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='e_y' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[1]<<"\n";
+                output << obj.cell[i].epsilon[1]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='e_z' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='e_z' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[2]<<"\n";
+                output << obj.cell[i].epsilon[2]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='gamma_xy' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='gamma_xy' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[3]<<"\n";
+                output << obj.cell[i].epsilon[3]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='gamma_yz' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='gamma_yz' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[4]<<"\n";
+                output << obj.cell[i].epsilon[4]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='gamma_zx' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='gamma_zx' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[5]<<"\n";
+                output << obj.cell[i].epsilon[5]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='stress_x' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='stress_x' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[0]<<"\n";
+                output << obj.cell[i].stress[0]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='stress_y' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='stress_y' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[1]<<"\n";
+                output << obj.cell[i].stress[1]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='stress_z' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='stress_z' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[2]<<"\n";
+                output << obj.cell[i].stress[2]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
 
-            out << "<DataArray type='Float64' Name='tau_xy' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='tau_xy' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[3]<<"\n";
+                output << obj.cell[i].stress[3]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='tau_yz' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='tau_yz' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[4]<<"\n";
+                output << obj.cell[i].stress[4]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='tau_zx' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='tau_zx' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[5]<<"\n";
+                output << obj.cell[i].stress[5]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            // out << "<DataArray type='Float64' Name='stress' format='ascii'>"<<"\n";
-            // for (int i = 0;i<obj.cell.size();++i)
-            // {
-            //     out << obj.cell[i].full_stress<<"\n";
-            // }   
-            // out << "</DataArray>"<<"\n";
+            output << "<DataArray type='Float64' Name='stress' format='ascii'>"<<"\n";
+            for (int i = 0;i<obj.cell.size();++i)
+            {
+                output << obj.cell[i].full_stress<<"\n";
+            }   
+            output << "</DataArray>"<<"\n";
  
 
-            out << "<DataArray type='Float64' Name='area' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='volume' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].volume<<"\n";
+                output << obj.cell[i].volume<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
              
-            out << "</CellData>"<<"\n"; 
+            output << "</CellData>"<<"\n"; 
 
-            out << "<Cells>"<<"\n";     
-            out << "<DataArray type='Int32' Name='connectivity' format='ascii'>"<<"\n";     
+            output << "<Cells>"<<"\n";     
+            output << "<DataArray type='Int32' Name='connectivity' format='ascii'>"<<"\n";     
             for (int i = 0;i<obj.cell.size();++i)
             {
                 for (int j = 0;j < obj.cell[i].index_node.size();++j)
                 {
-                    out << obj.cell[i].index_node[j] << " ";
-                    out<<"\n";
+                    output << obj.cell[i].index_node[j] << " ";
+                    output<<"\n";
                 } 
             }   
-            out << "</DataArray>"<<"\n";
-            out << "<DataArray type='Int32' Name='offsets' format='ascii'>"<<"\n";
+            output << "</DataArray>"<<"\n";
+            output << "<DataArray type='Int32' Name='offsets' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 4*(i+1) <<"\n";
+                output << 4*(i+1) <<"\n";
             }   
-            out << "</DataArray>"<<"\n";
-            out << "<DataArray type='Int32' Name='types' format='ascii'>"<<"\n";
+            output << "</DataArray>"<<"\n";
+            output << "<DataArray type='Int32' Name='types' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 10 <<"\n";
+                output << 10 <<"\n";
             }     
-            out << "</DataArray>"<<"\n";    
-            out << "</Cells>"<<"\n";
-            out << "</Piece>"<<"\n";
-            out << "</UnstructuredGrid>"<<"\n"; 
-            out << "</VTKFile>"<<"\n";                  
+            output << "</DataArray>"<<"\n";    
+            output << "</Cells>"<<"\n";
+            output << "</Piece>"<<"\n";
+            output << "</UnstructuredGrid>"<<"\n"; 
+            output << "</VTKFile>"<<"\n";                  
         }
-        out.close();
-        out.open("results/results_move.vtu");
-        if (out.is_open())
+        output.close();
+        output.open("results/results_move.vtu");
+        if (output.is_open())
         {
-            out << "<VTKFile type='UnstructuredGrid' version='0.1' byte_order='BigEndian'>"<<"\n";
-            out << "<UnstructuredGrid>"<<"\n";
-            out << "<Piece NumberOfPoints='"<<obj.node.size()<<"' NumberOfCells='"<<obj.cell.size()<<"'>"<<"\n";
-            out << "<Points>"<<"\n";
-            out << "<DataArray type='Float64' NumberOfComponents='3' Format='ascii'>"<<"\n";
+            output << "<VTKFile type='UnstructuredGrid' version='0.1' byte_order='BigEndian'>"<<"\n";
+            output << "<UnstructuredGrid>"<<"\n";
+            output << "<Piece NumberOfPoints='"<<obj.node.size()<<"' NumberOfCells='"<<obj.cell.size()<<"'>"<<"\n";
+            output << "<Points>"<<"\n";
+            output << "<DataArray type='Float64' NumberOfComponents='3' Format='ascii'>"<<"\n";
  
             for (int i = 0;i<obj.node.size();++i)
             {
-                out << obj.node[i].coordinate[0]+obj.node[i].displacement[0]<< " " <<obj.node[i].coordinate[1]+obj.node[i].displacement[1]<< " " <<obj.node[i].coordinate[2]+obj.node[i].displacement[2]<<"\n";
+                output << obj.node[i].coordinate[0]+obj.node[i].displacement[0]<< " " <<obj.node[i].coordinate[1]+obj.node[i].displacement[1]<< " " <<obj.node[i].coordinate[2]+obj.node[i].displacement[2]<<"\n";
             }
-            out << "</DataArray>"<<"\n";
-            out << "</Points>"<<"\n";
+            output << "</DataArray>"<<"\n";
+            output << "</Points>"<<"\n";
 
-            out << "<CellData Scalars='scalars'>"<<"\n";
+            output << "<CellData Scalars='scalars'>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='Parts' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='Parts' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-             out << obj.cell[i].part<<"\n";
+             output << obj.cell[i].part<<"\n";
             }    
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
 
-            out << "<DataArray type='Float64' Name='e_x' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='e_x' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[0]<<"\n";
+                output << obj.cell[i].epsilon[0]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='e_y' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='e_y' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[1]<<"\n";
+                output << obj.cell[i].epsilon[1]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='e_z' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='e_z' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[2]<<"\n";
+                output << obj.cell[i].epsilon[2]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='gamma_xy' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='gamma_xy' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[3]<<"\n";
+                output << obj.cell[i].epsilon[3]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='gamma_yz' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='gamma_yz' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[4]<<"\n";
+                output << obj.cell[i].epsilon[4]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='gamma_zx' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='gamma_zx' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].epsilon[5]<<"\n";
+                output << obj.cell[i].epsilon[5]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='stress_x' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='stress_x' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[0]<<"\n";
+                output << obj.cell[i].stress[0]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='stress_y' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='stress_y' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[1]<<"\n";
+                output << obj.cell[i].stress[1]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='stress_z' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='stress_z' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[2]<<"\n";
+                output << obj.cell[i].stress[2]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
 
-            out << "<DataArray type='Float64' Name='tau_xy' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='tau_xy' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[3]<<"\n";
+                output << obj.cell[i].stress[3]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='tau_yz' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='tau_yz' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[4]<<"\n";
+                output << obj.cell[i].stress[4]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
-            out << "<DataArray type='Float64' Name='tau_zx' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='tau_zx' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].stress[5]<<"\n";
+                output << obj.cell[i].stress[5]<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
-            // out << "<DataArray type='Float64' Name='stress' format='ascii'>"<<"\n";
-            // for (int i = 0;i<obj.cell.size();++i)
-            // {
-            //     out << obj.cell[i].full_stress<<"\n";
-            // }   
-            // out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
+            output << "<DataArray type='Float64' Name='stress' format='ascii'>"<<"\n";
+            for (int i = 0;i<obj.cell.size();++i)
+            {
+                output << obj.cell[i].full_stress<<"\n";
+            }   
+            output << "</DataArray>"<<"\n";
  
 
-            out << "<DataArray type='Float64' Name='area' format='ascii'>"<<"\n";
+            output << "<DataArray type='Float64' Name='volume' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << obj.cell[i].volume<<"\n";
+                output << obj.cell[i].volume<<"\n";
             }   
-            out << "</DataArray>"<<"\n";
+            output << "</DataArray>"<<"\n";
 
              
-            out << "</CellData>"<<"\n"; 
+            output << "</CellData>"<<"\n"; 
 
-            out << "<Cells>"<<"\n";     
-            out << "<DataArray type='Int32' Name='connectivity' format='ascii'>"<<"\n";     
+            output << "<Cells>"<<"\n";     
+            output << "<DataArray type='Int32' Name='connectivity' format='ascii'>"<<"\n";     
             for (int i = 0;i<obj.cell.size();++i)
             {
                 for (int j = 0;j < obj.cell[i].index_node.size();++j)
                 {
-                    out << obj.cell[i].index_node[j] << " ";
-                    out <<"\n";
+                    output << obj.cell[i].index_node[j] << " ";
+                    output <<"\n";
                 }
             }   
-            out << "</DataArray>"<<"\n";
-            out << "<DataArray type='Int32' Name='offsets' format='ascii'>"<<"\n";
+            output << "</DataArray>"<<"\n";
+            output << "<DataArray type='Int32' Name='offsets' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 4*(i+1) <<"\n";
+                output << 4*(i+1) <<"\n";
             }   
-            out << "</DataArray>"<<"\n";
-            out << "<DataArray type='Int32' Name='types' format='ascii'>"<<"\n";
+            output << "</DataArray>"<<"\n";
+            output << "<DataArray type='Int32' Name='types' format='ascii'>"<<"\n";
             for (int i = 0;i<obj.cell.size();++i)
             {
-                out << 10 <<"\n";
+                output << 10 <<"\n";
             }   
-            out << "</DataArray>"<<"\n";    
-            out << "</Cells>"<<"\n";
-            out << "</Piece>"<<"\n";
-            out << "</UnstructuredGrid>"<<"\n"; 
-            out << "</VTKFile>"<<"\n";                  
+            output << "</DataArray>"<<"\n";    
+            output << "</Cells>"<<"\n";
+            output << "</Piece>"<<"\n";
+            output << "</UnstructuredGrid>"<<"\n"; 
+            output << "</VTKFile>"<<"\n";                  
         }
-        out.close();        
+        output.close();        
 };

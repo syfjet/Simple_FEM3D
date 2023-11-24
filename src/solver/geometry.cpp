@@ -7,7 +7,7 @@ Geometry<O>::~Geometry(){};
 
 template<class O>
 template<class I>
-void Geometry<O>::geometry_area(I i, O &obj)
+void Geometry<O>::geometry_volume(I i, O &obj)
 {
 
     std::array<int,4> index;
@@ -104,7 +104,6 @@ void Geometry<O>::geometry_b_matrix(I i, O &obj)
     obj.cell[i].B_matrix[2][5] = Geometry<O>::D[1]/obj.cell[i].volume;
     obj.cell[i].B_matrix[2][8] = Geometry<O>::D[2]/obj.cell[i].volume;
     obj.cell[i].B_matrix[2][11] = Geometry<O>::D[3]/obj.cell[i].volume;
-
 
 
 

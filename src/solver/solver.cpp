@@ -12,5 +12,5 @@ void Solver<O>::FEM_solver(O &obj)
 
     Linalg<O>::solve_linear_system(obj);    
     Stress_value<O>::define_stress_values(obj);
-    Out::out_paraview(obj);
+    Out<O>::out_paraview(obj);
 };

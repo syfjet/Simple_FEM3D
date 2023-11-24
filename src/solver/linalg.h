@@ -19,6 +19,10 @@ class Linalg: Boundary<O>
 		std::vector<K_rigid_sparse> k_rigid;
 	private:
 		template<class V> void update_K_rigid(V &U);
+
+		// template<class V> double dotProduct(V &a, V &b);
+		// template<class V> double dotProduct_r(V &a, O &obj);
+		
 }; 
 
  

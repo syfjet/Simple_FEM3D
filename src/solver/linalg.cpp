@@ -39,32 +39,29 @@ template<class O>
 void Linalg<O>::solve_linear_system(O &obj)
 {
 
-    vector<double> global_force(3*obj.node.size(),1);
-    vector<double> x(3*obj.node.size(),0); 
-    vector<double> r(3*obj.node.size(),0); 
-    vector<double> As(3*obj.node.size(),0); 
-    vector<double> s(3*obj.node.size(),0); 
+    std::vector<double> global_force(3*obj.node.size(),1);
+    std::vector<double> x(3*obj.node.size(),0); 
+    std::vector<double> r(3*obj.node.size(),0); 
+    std::vector<double> As(3*obj.node.size(),0); 
+    std::vector<double> s(3*obj.node.size(),0); 
  
     Boundary<O>::boundary_set(obj,global_force);
     Linalg<O>::update_K_rigid(global_force);
-    double tol, temp,rr,rAs,sAs,alpha,beta;
+    double tol, temp, rr, rAs, sAs, alpha, beta =0;
 
 
     for (int i = 0; i < obj.node.size(); ++i)
     {  
-       global_force[3*i] = obj.node[i].force[0]; 
-       global_force[3*i+1] = obj.node[i].force[1]; 
-       global_force[3*i+2] = obj.node[i].force[2]; 
+       global_force[3*i] = -obj.node[i].force[0]; 
+       global_force[3*i+1] = -obj.node[i].force[1]; 
+       global_force[3*i+2] = -obj.node[i].force[2]; 
+    
     }
+
+    s = r = global_force;
 
     tol = 1e-3;
-    for (int i = 0; i< Linalg<O>::k_rigid.size(); ++i)
-    {   
-        r[i] = -global_force[i];
-        s[i] = r[i];
-    }
-
-    for (int k = 0; k < 10000; ++k)
+    for (int k = 0; k < 100000; ++k)
     {   
         rr = 0;
         sAs = 0;
@@ -88,10 +85,7 @@ void Linalg<O>::solve_linear_system(O &obj)
         }
 
         rr = 0;
-        beta = 0;
         rAs = 0;
-        sAs = 0;
-
         for (int i = 0; i< Linalg<O>::k_rigid.size(); ++i)
         {
             temp = 0;
@@ -99,10 +93,9 @@ void Linalg<O>::solve_linear_system(O &obj)
             {
                 temp+=Linalg<O>::k_rigid[i].element[j]*x[Linalg<O>::k_rigid[i].index[j]];    
             }
-            r[i] = temp-global_force[i];
+            r[i] = temp+global_force[i];
             rr += r[i]*r[i];  
             rAs += r[i]*As[i];
-            sAs += s[i]*As[i];
         }
 
         if (rr < tol)
@@ -117,13 +110,13 @@ void Linalg<O>::solve_linear_system(O &obj)
                 s[i] = r[i]+beta*s[i];  
             }     
         }
-        cout<<"iter step = "<<k<<endl;
 
-        if (k >= 9999)
+        std::cout<<"iter step = "<< k << std::endl;
+
+        if (k >= 99999)
         {
-            cout<<"Not stable solution!"<<endl;
+            std::cout << "Not stable solution!" << std::endl;
         }
-
     }
     for (int i = 0; i < obj.node.size(); ++i)
     {   
