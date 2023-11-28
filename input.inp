@@ -1,6 +1,6 @@
 #START_INPUT#
 MESH
-mesh/fem.mesh
+mesh/fem_2.mesh
 END_MESH
 
 METRIC
@@ -9,24 +9,35 @@ END_METRIC
 
 BOUNDARY
 num
-2
-19 fix
-20 fix
+3
+39 fix
+36 fix
+60 fix
 END_BOUNDARY
 
 INITIAL
 num
-1
+8
 parts  E nu
-1      8000.0 0.3
+1      10000.0 0.3
+2      10000.0 0.3
+3      10000.0 0.3
+4      10000.0 0.3
+5      10000.0 0.3
+100      10000.0 0.3
+101      10000.0 0.3
+102      10000.0 0.3
 END_INITIAL
 
 SOURCE
 num
-1
+2
 boundary
 n Fx Fy Fz
-4 5 -1 1
+66 0 0 -100
+point
+x y z Fx Fy Fz
+11 0.44 7 0 0 -100
 END_SOURCE
 #END_INPUT#
 

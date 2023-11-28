@@ -16,7 +16,7 @@ void Shift<O>::define_matrix(O &obj)
     {
         Linalg<O>::k_rigid.push_back(K_rigid_);
     }
-
+    
     for (int i = 0; i < obj.cell.size(); ++i)
     {
         Geometry<O>::geometry_volume(i, obj);
@@ -31,15 +31,7 @@ void Shift<O>::define_matrix(O &obj)
 
     for (int i = 0; i < obj.node.size(); ++i)
     {   
-        std::fill(temp_index.begin(),temp_index.end(),0);
-        for (auto &itr:temp_k)
-        {
-            for (auto &itr_:itr)
-            {
-                std::fill(itr_.begin(),itr_.end(),0.0);
-            }
-        }
-
+        std::vector<int> temp_temp;
         int i_c,i_n,l;
         for (int j = 0; j < obj.node[i].connection.size(); ++j)
         {   
@@ -66,38 +58,49 @@ void Shift<O>::define_matrix(O &obj)
                     {                    
                         temp_k[i_n][ii][jj] += obj.cell[i_c].local_K_matrix[l+jj][3*k+ii];
                     }
-                }                                   
+                }      
+                temp_temp.push_back(i_n);                             
             }
         }
 
-        for (int j = 0; j < obj.node.size(); ++j)
+        for (int j = 0; j < temp_temp.size(); ++j)
         {   
-            if (temp_index[j] == 1)
+            if (temp_index[temp_temp[j]] == 1)
             {
                 for (int ii = 0; ii < 3; ++ii)
                 {
                     for (int jj = 0; jj < 3; ++jj)
                     {
-                        Linalg<O>::k_rigid[3*i+ii].index.push_back(3*j+jj);
-                        Linalg<O>::k_rigid[3*i+ii].element.push_back(temp_k[j][jj][ii]);
+                        Linalg<O>::k_rigid[3*i+ii].index.push_back(3*temp_temp[j]+jj);
+                        Linalg<O>::k_rigid[3*i+ii].element.push_back(temp_k[temp_temp[j]][jj][ii]);
                     }
                 }
             }
 
             //This step for individual nodes not includes in the mesh
-            if ((temp_index[i] == 0) && (i == j))
+            if ((temp_index[i] == 0) && (i == temp_temp[j]))
             {
                 for (int ii = 0; ii < 3; ++ii)
                 {
                     for (int jj = 0; jj < 3; ++jj)
                     {
-                        Linalg<O>::k_rigid[3*i+ii].index.push_back(3*j+jj);
+                        Linalg<O>::k_rigid[3*i+ii].index.push_back(3*temp_temp[j]+jj);
                         Linalg<O>::k_rigid[3*i+ii].element.push_back(0.0);
                     }
                 }
-            }            
+            }  
+            temp_index[temp_temp[j]] = 0;
+            temp_k[temp_temp[j]][0][0] = 0;      
+            temp_k[temp_temp[j]][0][1] = 0;      
+            temp_k[temp_temp[j]][0][2] = 0;      
+            temp_k[temp_temp[j]][1][0] = 0;      
+            temp_k[temp_temp[j]][1][1] = 0;      
+            temp_k[temp_temp[j]][1][2] = 0;      
+            temp_k[temp_temp[j]][2][0] = 0;      
+            temp_k[temp_temp[j]][2][1] = 0;      
+            temp_k[temp_temp[j]][2][2] = 0;      
         }
-    }  
+    } 
 }
 
 template<class O>

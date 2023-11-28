@@ -47,17 +47,17 @@ BooleanUnion{ Volume{2}; Delete; }{ Volume{1}; Delete; }
 //+
 Transfinite Curve {45, 47} = 2 Using Progression 1;
 //+
-Transfinite Curve {29, 46, 34, 48} = 20 Using Progression 1;
+Transfinite Curve {29, 46, 34, 48} = 30 Using Progression 1;
 //+
-Transfinite Curve {21, 13, 19, 10, 25, 30, 35, 2} = 5 Using Progression 1;
+Transfinite Curve {21, 13, 19, 10, 25, 30, 35, 2} = 10 Using Progression 1;
 //+
-Transfinite Curve {20, 12, 22, 14, 18, 9, 3, 1} = 20 Using Progression 1;
+Transfinite Curve {20, 12, 22, 14, 18, 9, 3, 1} = 40 Using Progression 1;
 //+
-Transfinite Curve {15, 17, 11, 8} = 20 Using Progression 1;
+Transfinite Curve {15, 17, 11, 8} = 30 Using Progression 1;
 //+
-Transfinite Curve {16,23,24,4} = 5 Using Progression 1;
+Transfinite Curve {16,23,24,4} = 10 Using Progression 1;
 //+
 
-Transfinite Curve {26, 33, 40, 5, 32, 28, 27, 31, 36, 6, 38, 7} = 5 Using Progression 1;
+Transfinite Curve {26, 33, 40, 5, 32, 28, 27, 31, 36, 6, 38, 7} = 10 Using Progression 1;
 //+
-Transfinite Curve {42, 44, 43, 41, 39, 37} = 5 Using Progression 1;
+Transfinite Curve {42, 44, 43, 41, 39, 37} = 10 Using Progression 1;

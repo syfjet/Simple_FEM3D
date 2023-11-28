@@ -13,27 +13,28 @@ void Linalg<O>::update_K_rigid(V &global_force)
     {   
         if (global_force[i] == 0)
         {
+
             for (int j = 0; j < Linalg<O>::k_rigid[i].index.size(); ++j)
             {        
                 Linalg<O>::k_rigid[i].element[j] = 0;
+                
+                for (int l = 0; l < Linalg<O>::k_rigid[Linalg<O>::k_rigid[i].index[j]].index.size(); ++l)
+                {
+                    if (Linalg<O>::k_rigid[Linalg<O>::k_rigid[i].index[j]].index[l] == i)
+                    {
+                        Linalg<O>::k_rigid[Linalg<O>::k_rigid[i].index[j]].element[l] = 0; 
+                    }
+                }
+
                 if ((Linalg<O>::k_rigid[i].index[j] == i) && (Linalg<O>::k_rigid[i].element[j] == 0))
                 {
                     Linalg<O>::k_rigid[i].element[j] = 1;
                 } 
-            }
-            for (int k = i+1; k < Linalg<O>::k_rigid.size(); ++k)
-            {   
-                for (int l = 0; l < Linalg<O>::k_rigid[k].index.size(); ++l)
-                {              
-                    if (Linalg<O>::k_rigid[k].index[l] == i)
-                    {
-                        Linalg<O>::k_rigid[k].element[l] = 0;   
-                    }  
-                }
-            }                  
+            }              
         }
     }
 }
+
 
 template<class O>
 void Linalg<O>::solve_linear_system(O &obj)
@@ -46,9 +47,8 @@ void Linalg<O>::solve_linear_system(O &obj)
     std::vector<double> s(3*obj.node.size(),0); 
  
     Boundary<O>::boundary_set(obj,global_force);
-    Linalg<O>::update_K_rigid(global_force);
+    Linalg<O>::update_K_rigid(global_force);  
     double tol, temp, rr, rAs, sAs, alpha, beta =0;
-
 
     for (int i = 0; i < obj.node.size(); ++i)
     {  
@@ -111,7 +111,7 @@ void Linalg<O>::solve_linear_system(O &obj)
             }     
         }
 
-        std::cout<<"iter step = "<< k << std::endl;
+        std::cout<<"iter step = "<< k <<" stab = "<<rr <<std::endl;
 
         if (k >= 99999)
         {
