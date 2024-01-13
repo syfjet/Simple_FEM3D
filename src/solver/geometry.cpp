@@ -36,7 +36,7 @@ void Geometry<O>::geometry_volume(I i, O &obj)
             index[0] = obj.cell[i].index_node[1];
             index[1] = obj.cell[i].index_node[2];
             index[2] = obj.cell[i].index_node[3];
-            index[4] = obj.cell[i].index_node[0];            
+            index[3] = obj.cell[i].index_node[0];            
             sig = 1.0;           
         }
         if (j == 1)
