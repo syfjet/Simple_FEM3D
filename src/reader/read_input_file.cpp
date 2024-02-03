@@ -157,7 +157,7 @@ void Read_input_file::read(string input_file,Object &obj, Numerical &numer)
 								b[1] = obj.node[obj.segment[i].index_node[2]].coordinate[1]-obj.node[obj.segment[i].index_node[0]].coordinate[1];
 								b[2] = obj.node[obj.segment[i].index_node[2]].coordinate[2]-obj.node[obj.segment[i].index_node[0]].coordinate[2];
 
-								area = 0.5*abs(a[1]*b[2]-a[2]*b[1]-(a[0]*b[2]-a[2]*b[0])+(a[0]*b[1]-a[1]*b[0]));
+								area = 0.5*fabs(a[1]*b[2]-a[2]*b[1]-(a[0]*b[2]-a[2]*b[0])+(a[0]*b[1]-a[1]*b[0]));
 
 								obj.node[obj.segment[i].index_node[0]].force[0] += fx*0.333*area;
 								obj.node[obj.segment[i].index_node[0]].force[1] += fy*0.333*area;
