@@ -57,7 +57,8 @@ void Linalg<O>::solve_linear_system(O &obj)
 {
 
     std::vector<double> global_force(3*obj.node.size(),1);
-    std::vector<double> x(3*obj.node.size(),0); 
+    std::vector<double> x(3*obj.node.size(),0);
+    std::vector<double> x_old(3*obj.node.size(),0);      
     std::vector<double> r(3*obj.node.size(),0); 
     std::vector<double> As(3*obj.node.size(),0); 
     std::vector<double> s(3*obj.node.size(),0); 
@@ -95,9 +96,12 @@ void Linalg<O>::solve_linear_system(O &obj)
 
         alpha = rr/sAs;
 
+        double dx = 0;
         for (int i = 0; i < Linalg<O>::k_rigid.size(); ++i)
-        {
-            x[i] = x[i]-alpha*s[i];   
+        {   
+            x_old[i] = x[i];
+            x[i] = x[i]-alpha*s[i];
+            dx = fmax(fabs(x[i]-x_old[i])/pow(obj.cell[i].volume,0.333),dx);   
         }
 
         rr = 0;
@@ -114,20 +118,20 @@ void Linalg<O>::solve_linear_system(O &obj)
             rAs += r[i]*As[i];
         }
 
-        if (rr < tol)
+        if ((rr < tol) || (dx < 1e-3))
         {
             break;
         }
         else
         {
             beta = -rAs/sAs;
-            for (int i = 0; i< Linalg<O>::k_rigid.size(); ++i)
+            for (int i = 0; i < Linalg<O>::k_rigid.size(); ++i)
             {  
                 s[i] = r[i]+beta*s[i];  
             }     
         }
 
-        std::cout<<"iter step = "<< k <<" stab = "<<rr <<std::endl;
+        std::cout <<"iter step = "<< k <<" stab = "<< rr <<" "<< dx << std::endl;
 
         if (k >= 99999)
         {

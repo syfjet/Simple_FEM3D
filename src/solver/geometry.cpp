@@ -98,7 +98,7 @@ void Geometry<O>::geometry_volume(I i, O &obj)
         c[3][j] = obj.node[index[2]].coordinate[j]-obj.node[index[3]].coordinate[j];
     }
 
-    obj.cell[i].volume = abs(b[0][0]*(a[0][1]*c[0][2]-a[0][2]*c[0][1])-b[0][1]*(a[0][0]*c[0][2]-a[0][2]*c[0][0])+b[0][2]*(a[0][0]*c[0][1]-a[0][1]*c[0][0]))/6.0;    
+    obj.cell[i].volume = fabs(b[0][0]*(a[0][1]*c[0][2]-a[0][2]*c[0][1])-b[0][1]*(a[0][0]*c[0][2]-a[0][2]*c[0][0])+b[0][2]*(a[0][0]*c[0][1]-a[0][1]*c[0][0]))/6.0;    
 }
 
 template<class O>

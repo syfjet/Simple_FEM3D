@@ -15,6 +15,7 @@
 // along with Simple_FEM3D.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
+#include <cmath>
 #include "boundary.h"
 #include "boundary.cpp"
 #include "../object.h"
